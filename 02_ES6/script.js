@@ -640,24 +640,207 @@
 // -----------------------
 
 // Another example
-function makeList(array) {
-  const failureItems = [];
-  for (let item of array) {
-    failureItems.push(`<li class="text-warning">${item}</li>`);
+// function makeList(array) {
+//   const failureItems = [];
+//   for (let item of array) {
+//     failureItems.push(`<li class="text-warning">${item}</li>`);
+//   }
+//   return failureItems;
+// }
+
+// // Testing
+// const result = {
+//   success: ['max-lenght', 'no-amd', 'prefer-arrow-functions'],
+//   failure: ['no-var', 'var-on-top', 'linebreak'],
+//   skipped: ['no-extra-semi', 'no-dup-keys'],
+// };
+
+// // console.log(makeList(result.failure));
+
+// // console.log([1, 2, 3].map((e) => e * 2));
+// const failureItems = ({ failure }) => failure.map((e) => `<li class="text-warning">${e}</li>`);
+
+// console.log(failureItems(result));
+// ------------------------------------------------------------------------------------------------------------------------
+
+/**
+ * 18. WRITE CONCISE OBJECT LITERAL DECLARATIONS USING PROPERTY SHORTHAND
+ */
+
+/**
+ * ES6 adds some nice support for easily defining object literals
+ *
+ * Considering the following code:
+ */
+
+// const getMousePosition = (x, y) => ({ x: x, y: y });
+
+/**
+ * getMousePosition is simple function that returns an object containing two properties.
+ *
+ * ES6 provides the syntatic sugar to eliminate the redundancy of having to write x: x.
+ * You can simply write x once, and it will be converted to x: x (or something equipvalent) under the hood.
+ * Here is the same function from above rewritten to use the new syntax:
+ */
+
+// const getPosition = (left, top) => ({ left, top });
+// let pos = getPosition(10, 30);
+// console.log(pos.left);
+// // 10
+// console.log(pos.top);
+// // 30
+// console.log(pos);
+
+// let name = 'Kelly',
+//   age = 20;
+
+// let user = { name, age };
+// console.log(user);
+// // {name: "Kelly", age: 20}
+// ------------------------------------
+
+// Another example: Create a user with these properties: name, age, isDeveloper
+
+// Way 1
+// function createUser(name, age, isDeveloper) {
+//   return { name, age, isDeveloper };
+// }
+
+// Way 2: using arrow function
+// let createUser = (name, age, isDeveloper) => ({ name, age, isDeveloper });
+
+// let peter = createUser('Peter Pan', 20, true);
+
+// for (let item of Object.keys(peter)) {
+//   console.log(`${item}: ${peter[item]}`);
+// }
+// // name: Peter Pan
+// // script.js:708 age: 20
+// // script.js:708 isDeveloper: true
+// ------------------------------------------------------------------------------------------------------------------------
+
+/**
+ * 19. WRITE CONCISE DECLARATIVE FUNCTIONS WITH ES6
+ */
+
+/**
+ * When defining functions within objects in ES5, we have to use the keyword function as follows:
+ */
+
+// const person = {
+//   name: 'Taylor',
+//   sayHello: function () {
+//     return `Hello! My name is ${this.name}.`;
+//   },
+// };
+
+// console.log(person.name);
+// // Taylor
+// console.log(person.sayHello());
+// // Hello! My name is Taylor.
+
+/**
+ * With ES6, you can you can remove the function keyword and colon altogether when defining functions in objects.
+ * Here's an example of this syntax:
+ */
+
+// const person = {
+//   name: 'Taylor',
+//   sayHello() {
+//     return `Hello! My name is ${this.name}.`;
+//   },
+// };
+
+// console.log(person.sayHello());
+// // Hello! My name is Taylor.
+// -------------------------------------------------
+
+// // Another example
+// const bicycle = {
+//   gear: 2,
+//   setGear(newGear) {
+//     this.gear = newGear;
+//   },
+// };
+
+// console.log(bicycle.gear);
+// // 2
+
+// // Calling the bicycle's setGear() method
+// bicycle.setGear(3);
+// console.log(bicycle.gear);
+// // 3
+// -------------------------------------------------
+
+// Another example
+// const createVehicle = (name, gear) => ({ name, gear });
+// const createVehicle = (name, gear) => ({
+//   name,
+//   gear,
+//   setName(newName) {
+//     this.name = newName;
+//   },
+//   setGear(newGear) {
+//     this.gear = newGear;
+//   },
+// });
+
+// let car = createVehicle('Car', 5);
+// console.log(car.gear);
+// // 5
+// car.setGear(10);
+// console.log(car.gear);
+// // 10
+// ------------------------------------------------------------------------------------------------------------------------
+
+/**
+ * 20. USE class SYNTAX TO DEFINE A CONSTRUCTOR FUNCTION
+ */
+
+/**
+ * ES6 provides a new syntax to create objects, using the class keyword.
+ *
+ * It should be noted that the class syntax is just syntax, and not a full-fledged class-based implementation of
+ * an object-oriented paradigm, unlike in languages such as Java, Python, Ruby, etc.
+ */
+
+/**
+ * In ES5, we usually define a constructor function and use the new keyword to instantiate an object.
+ */
+
+// var SpaceShuttle = function (targetPlanet) {
+//   this.targetPlanet = targetPlanet;
+// };
+
+// var zeus = new SpaceShuttle('Jupiter');
+// console.log(zeus.targetPlanet);
+// // Jupiter
+
+/**
+ * The class syntax simply replaces the constructor function creation:
+ */
+// class SpaceShuttle {
+//   constructor(targetPlanet) {
+//     this.targetPlanet = targetPlanet;
+//   }
+// }
+
+// const zeus = new SpaceShuttle('Jupiter');
+// console.log(zeus.targetPlanet);
+// Jupiter
+
+/**
+ * It should be noted that the class keyword declares a new function, to which a constructor is added.
+ * This constructor is invoked when new is called to create a new object.
+ */
+
+/**
+ * NOTE: UpperCamelCase should be used by concention for ES6 class names, as in SpaceShuttle used above.
+ */
+
+// Example
+class Vegetable {
+  constructor(name) {
+    this.name = name;
   }
-  return failureItems;
 }
-
-// Testing
-const result = {
-  success: ['max-lenght', 'no-amd', 'prefer-arrow-functions'],
-  failure: ['no-var', 'var-on-top', 'linebreak'],
-  skipped: ['no-extra-semi', 'no-dup-keys'],
-};
-
-// console.log(makeList(result.failure));
-
-// console.log([1, 2, 3].map((e) => e * 2));
-const failureItems = ({ failure }) => failure.map((e) => `<li class="text-warning">${e}</li>`);
-
-console.log(failureItems(result));
