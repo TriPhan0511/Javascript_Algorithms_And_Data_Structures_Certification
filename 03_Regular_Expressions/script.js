@@ -617,3 +617,269 @@
 /**
  * 27 - SPECIFY EXACT NUMBER OF MATCHES
  */
+
+/**
+ * You can specify the lower and upper number of patterns with quatity specifiers using
+ * curly braces. Sometimes you only want a specific number of matches.
+ *
+ * To specify a certain number of patterns, just have that one number between the curly braces.
+ *
+ * For example, to match only the word "hah" with the letter a 3 times, you regex would be /ha{3}h/.
+ */
+
+// let re = /ha{3}h/;
+
+// console.log(re.test('haah'));
+// // false
+// console.log(re.test('haaah'));
+// // true
+// console.log(re.test('haaaah'));
+// // false
+// -----------------------------------------------------------------------------------------
+
+/**
+ * 28 - CHECK FOR ALL OR NONE
+ */
+
+/**
+ * Sometimes the patterns you want to search for may have parts of it that may or may not exist.
+ * However, it may be important to check for them nonetheless.
+ *
+ * You can specify the possible existence of an element with a question mark, ?. This checks
+ * for zero or one of the preceding element. You can think of this symbol as saying the previous
+ * element is optional.
+ *
+ * For example, there are slight differences in American and British English and you can use the
+ * question mark to match both spellings.
+ */
+
+// let re = /colou?r/;
+
+// console.log(re.test('color'));
+// // true
+// console.log(re.test('colour'));
+// // true
+
+// console.log(re.test('colouur'));
+// // false
+// -------------------------------
+
+// let re = /favou?rite/;
+
+// console.log(re.test('favorite'));
+// // true
+// console.log(re.test('favourite'));
+// // true
+// -----------------------------------------------------------------------------------------
+
+/**
+ * 29 - POSITIVE AND NEGATIVE LOOKAHEAD
+ */
+
+/**
+ * Lookaheads are patterns that tell Javascript to look-ahead in your string to check for patterns
+ * further along. This can be useful when you want to search for multiple patterns over the same string.
+ *
+ * There are two kinds of lookaheads: positive lookahead and negative lookahead.
+ *
+ * A positive lookahead will look to make sure the element in the search pattern is there,
+ * but won't actually match. A positive lookahead is used as (?=...) where the ... is the required part
+ * that is not matched.
+ *
+ * On the other hand, a negative lookahead will look to make sure the element in the search pattern
+ * is not there. A negative lookahead is used as (?!...) where the ... is the pattern that you do not
+ * want to be there. The rest of the pattern is returned if the negative lookahead part is not present.
+ */
+
+// let quit = 'qu';
+// let noquit = 'qt';
+
+// let quRegex = /q(?=u)/;
+// let qRegex = /q(?!u)/;
+
+// console.log(quit.match(quRegex));
+// // ["q"]
+// console.log(noquit.match(qRegex));
+// // ["q"]
+// -----------------------------------------------------
+
+// // Example: Positive lookahead
+// console.log('qu'.match(/q(?=u)/));
+// // ["q"]
+// console.log('qt'.match(/q(?=u)/));
+// // null
+
+// // Example: Negative lookahead
+// console.log('qu'.match(/q(?!u)/));
+// // null
+// console.log('qt'.match(/q(?!u)/));
+// // ["q"]
+// -----------------------------------------------------
+
+// Example: Check two or more patterns in one string. Here is a (naively) simple password checker
+// that looks for between 3 and 6 characters and at least one number:
+
+// let pwChecker = /(?=\w{3,6})(?=\D*\d)/;
+
+// console.log(pwChecker.test('abc123'));
+// // true
+// console.log(pwChecker.test('a1'));
+// // false
+// console.log(pwChecker.test('aaa'));
+// // false
+// console.log(pwChecker.test('1aa'));
+// // true
+// -----------------------------------------------------
+
+// Use lookaheads in the pwRegex to match passwords that are greater than 5 characters long,
+// and have two consecutive digits.
+
+// let pwRegex = /(?=\w{6,})(?=\D*\d{2}\D*)/;
+
+// console.log(pwRegex.test('abcd12'));
+// // true
+
+// console.log(pwRegex.test('123456'));
+// // true
+
+// console.log(pwRegex.test('abcdef'));
+// // false
+
+// console.log(pwRegex.test('b12cd'));
+// // false
+
+// console.log(pwRegex.test('abcde1'));
+// // false
+
+// console.log(pwRegex.test('1abcd2'));
+// // false
+// -----------------------------------------------------------------------------------------
+
+/**
+ * 30 - CHECK FOR MIXED GROUPING OF CHARACTERS
+ */
+
+/**
+ * Sometimes we want to check for groups of characters using a Regular Expression and to achieve
+ * that we use parentheses ().
+ *
+ * If you want to find either "Penguin" or "Pumpkin" in a string, you can use the following
+ * regular expression: /P(engu|umpk)in/
+ */
+
+// let re = /P(engu|umpk)in/;
+
+// console.log(re.test('Penguin'));
+// // true
+// console.log(re.test('Pumpkin'));
+// // true
+// -----------------------------------------------------------------------------------------
+
+/**
+ * 31 - REUSE PATTERNS USING CAPTURE GROUPS
+ */
+
+/**
+ * Some patterns you search for will occur multiple times in a string. It is wasteful to
+ * manually repeat that regex. There is a better way to specify when you have mutiple repeat
+ * substrings in your string.
+ *
+ * You can search for repeat substrings using capture groups. Parentheses (), are used to find
+ * repeat substrings. You put the regex of the pattern that will repeat in between the parentheses.
+ *
+ * To specify where that repeat string will appear, you use a backslash (\) an then a number.
+ * This number starts at 1 and increases with each additional capture group you use
+ */
+
+// Example: Use regular expression to match a string that consists of only the same number repeated
+// exactly three times separated by singe spaces.
+
+// let re = /^(\d+)(\s)\1\2\1$/;
+
+// console.log('42 42 42'.match(re));
+// // ["42 42 42", "42", " "]
+// console.log('100 100 100'.match(re));
+// // ["100 100 100", "100, " "]
+// console.log('42 42 42 42'.match(re));
+// // null
+// -------------------------------------------------------
+
+// // The example above below matches any word that occurs twice separated by a space:
+// let repeatStr = /(\w+)\s\1/;
+
+// console.log('regex regex'.match(repeatStr));
+// // ["regex regex", "regex", index: 0, input: "regex regex", groups: undefined]
+
+// -------------------------------------------------------
+
+// let re = /(test)\s\1/;
+// let literalRe = /test\stest/;
+
+// console.log('test test test'.match(re));
+// // ["test test", "test"]
+
+// console.log('test test test'.match(literalRe));
+// // ["test test"]
+// -------------------------------------------------------
+
+// let re = /(test)(\s)\1\2\1/;
+// console.log('test test test'.match(re));
+// // ["test test test, "test", " "]
+// -------------------------------------------------------
+
+// let re = /(test)(\s)\1\2\1/;
+
+// console.log('test test test'.match(re));
+
+// console.log('abc c b a'.match(/(a)(b)(c)(\s)\3\4\2\4\1/));
+// -----------------------------------------------------------------------------------------
+
+/**
+ * 32 - USE CAPTURE GROUPS TO SEARCH AND REPLACE
+ */
+
+/**
+ * Searching is useful. However, you can make searching even more powerful when it is also changes
+ * (or replace) the text you match.
+ *
+ * You can search and replace text in a string using .replace() on a string.
+ * The inputs for .replace() is first the regex pattern you want to search for.
+ * The second parameter is the string to replace the match or function to do something.
+ */
+
+// console.log('The sky is silver.'.replace(/silver/, 'blue'));
+// // The sky is blue.
+
+/**
+ * You can also capture group in the replacement string with dollar sign ($).
+ */
+
+// console.log('Code Camp'.replace(/(\w+) (\w+)/, '$2 $1'));
+// // Camp Code
+// ----------------------------------------------------------
+
+// console.log('one two three'.replace(/(\w+) (\w+) (\w+)/, '$3 $2 $1'));
+// // three two one
+// -----------------------------------------------------------------------------------------
+
+/**
+ * 33 - REMOVE WHITESPACE FROM START AND END
+ */
+
+// console.log('Hello, world');
+// console.log(/^\s\w+\s$/.test(' Helloworld '));
+// // true
+// console.log(/^(\s)(\w+)(\s)$/.exec(' Helloworld '));
+// // [" Helloworld ", " ", "Helloworld", " ", index: 0, input: " Helloworld ", groups: undefined]
+
+// console.log(' Helloworld '.replace(/^(\s)(\w+)(\s)$/, '$2'));
+// console.log(' Hello, world '.replace(/^(\s)(\w+)(\s)$/, '$2'));
+
+// console.log('  Hello, world'.replace(/^\s+|\s+$/g, ''));
+// -----------------------------------------------------------------------------------------
+
+console.log('titanic'.match(/t[a-z]*i/));
+// ["titani", index: 0, input: "titanic", groups: undefined]
+
+console.log('titanic'.match(/t[a-z]*?i/));
+// ["ti", index: 0, input: "titanic", groups: undefined]
