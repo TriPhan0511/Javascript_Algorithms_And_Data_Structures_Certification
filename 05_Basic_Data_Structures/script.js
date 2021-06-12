@@ -400,3 +400,10 @@
 /**
  * 15 - ACCESS PROPERTY NAMES WITH BRACKET NOTATION
  */
+
+/**
+ * In the first object challenge we mentioned the use of bracket notation as a way to access
+ * property values using the evaluation of a variable. For instance, imagine that our foods object
+ * is being used in a program for a supermarket cash register. We have some function that sets
+ * the selectedFood and we want to check our foods object for the 
+ */
