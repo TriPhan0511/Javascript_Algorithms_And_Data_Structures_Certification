@@ -405,5 +405,288 @@
  * In the first object challenge we mentioned the use of bracket notation as a way to access
  * property values using the evaluation of a variable. For instance, imagine that our foods object
  * is being used in a program for a supermarket cash register. We have some function that sets
- * the selectedFood and we want to check our foods object for the 
+ * the selectedFood and we want to check our foods object for the presence of that food.
+ * This might look like:
  */
+
+// let selectedFood = getCurrentFood(scannedItem);
+// let inventory = foods(selectedFood);
+
+/**
+ * This code will evaluate the value stored in the selectedFood variable and
+ * return the value of key in the foods object, or undefined if it does not
+ * present. Bracket notation is very useful because sometime object properties
+ * are not known before runtime or we need to accsess them in a more dynamic way.
+ */
+
+// let foods = {
+//   apples: 25,
+//   oranges: 32,
+//   plums: 28,
+//   bananas: 13,
+//   grapes: 35,
+//   strawberries: 27,
+// };
+
+// function checkInventory(scannedItem) {
+//   return foods[scannedItem];
+// }
+
+// // Testing
+// console.log(checkInventory('strawberries'));
+// // 27
+// console.log(checkInventory('guavas'));
+// // undefined
+// -------------------------------------------------------------------------------------
+
+/**
+ * 16 - USE THE delete KEYWORD TO REMOVE OBJECT PROPERTY
+ */
+
+/**
+ * Now you know what objects are and their basic features and advantages. In short,
+ * they are key-value stores which provide a flexible, intuitive way to structure data,
+ * and, they provide a very fast lookup time.
+ *
+ * Through the rest these challenges, we will describes several common operations you
+ * can perform an objects so you become comfortable applying these useful data structures
+ * in your program.
+ *
+ * In earlier challenges, we have both added to and modified an object's key-value pair.
+ * Here we will see how we can remove a key-pair value from an object.
+ *
+ * Let's revisitour foods object example one last time. If we wanted to remove the
+ * apples key, we can remove it by using the delete keyword.
+ */
+
+// let foods = {
+//   apples: 25,
+//   oranges: 32,
+//   plums: 28,
+// };
+
+// console.log(foods['apples']);
+// // 25
+
+// delete foods['apples'];
+
+// console.log(foods['apples']);
+// // undefined
+// -------------------------------------------------------------------------------------
+
+/**
+ * 17 - CHECK IF AN OBJECT HAS AN PROPERTY
+ */
+
+/**
+ * Now we can add, modify, and removes keys from objetcs. But what if we just wanted to
+ * know if an object has a specific property?
+ *
+ * Javascript provides us with two different ways to do this.
+ * One use the hasOwnProperty() method an the other uses the in keyword.
+ *
+ * If we have an object users with property Alan, we could check for it presence in
+ * either of the following ways:
+ */
+
+// let users = { Peter: 'developer' };
+
+// console.log('Alan' in users);
+// // false
+// console.log(users.hasOwnProperty('Alan'));
+// // false
+
+// console.log('Peter' in users);
+// // true
+// console.log(users.hasOwnProperty('Peter'));
+// // true
+// -----------------------------------------
+
+// let users = {
+//   Alan: {
+//     age: 27,
+//     online: true,
+//   },
+//   Jeff: {
+//     age: 32,
+//     online: true,
+//   },
+//   Sarah: {
+//     age: 48,
+//     online: true,
+//   },
+//   Ryan: {
+//     age: 19,
+//     online: true,
+//   },
+// };
+
+// function isEveryoneHere(userObject) {
+//   // for (let name of ['Alan', 'Jeff', 'Sarah', 'Ryan']) {
+//   //   if (!userObject.hasOwnProperty(name)) {
+//   //     return false;
+//   //   }
+//   // }
+//   // return true;
+
+//   for (let name of ['Alan', 'Jeff', 'Sarah', 'Ryan']) {
+//     if (!(name in userObject)) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
+
+// // Testing
+// console.log(isEveryoneHere(users));
+// // true
+// -------------------------------------------------------------------------------------
+
+/**
+ * 18 - ITERATE THROUGH THE KEYS OF AN OBJECT WITH A for...in STATEMENT
+ */
+
+/**
+ * Sometimes you may need to iterate all the keys within an object. This requires a
+ * specific syntax in Javascript called a for...in statement.
+ */
+
+// let users = {
+//   Alan: {
+//     online: true,
+//   },
+//   Jeff: {
+//     online: true,
+//   },
+//   Sarah: {
+//     online: false,
+//   },
+//   Ryan: {
+//     online: true,
+//   },
+// };
+
+// for (user in users) {
+//   console.log(user);
+// }
+// Alan
+// Jeff
+// Sarah
+// Ryan
+
+/**
+ * Note: Objects do not maintain an ordering to stored keys like arrays do;
+ * thus a key's position on an object, or the relative order in which it appears,
+ * is irrelevant when referencing or accessing that key.
+ */
+
+// let users = {
+//   Alan: {
+//     online: true,
+//   },
+//   Jeff: {
+//     online: true,
+//   },
+//   Sarah: {
+//     online: false,
+//   },
+//   Ryan: {
+//     online: true,
+//   },
+// };
+
+// function countOnline(obj) {
+//   let count = 0;
+//   for (let item in obj) {
+//     if (obj[item]['online']) {
+//       count++;
+//     }
+//   }
+//   return count;
+// }
+
+// console.log(countOnline(users));
+// // 3
+// -------------------------------------------------------------------------------------
+
+/**
+ * 19 - GENERATE AN ARRAY OF ALL OBJECT KEYS WITH Object.keys()
+ */
+
+/**
+ * We can also generate an array which contains all the keys stored in an object using
+ * the Object.keys() method and passing in an object as the argument. This will return
+ * an array with strings represent each property in the object.
+ * Again, there will be no specific order to the entries in the array.
+ */
+
+// let users = {
+//   Alan: {
+//     age: 27,
+//     online: false,
+//   },
+//   Jeff: {
+//     age: 32,
+//     online: true,
+//   },
+//   Sarah: {
+//     age: 48,
+//     online: false,
+//   },
+//   Ryan: {
+//     age: 19,
+//     online: true,
+//   },
+// };
+
+// function getArrayOfUsers(obj) {
+//   return Object.keys(obj);
+// }
+
+// // Testing
+// console.log(getArrayOfUsers(users));
+// // ["Alan", "Sarah", "Jeff", "Ryan"]
+// -------------------------------------------------------------------------------------
+
+/**
+ * 20 - MODIFY AN ARRAY STORED IN AN OBJECT
+ */
+
+/**
+ * Now you've seen all the basci operations for Javascript objects.
+ * You can add, modify, and remove key-value pairs, check if they exists, and iterate over
+ * all the keys in an object
+ */
+
+// user Object
+let user = {
+  name: 'Kenneth',
+  age: 28,
+  data: {
+    username: 'kennethCodesAllDay',
+    joinDate: 'March 26, 2016',
+    organization: 'freeCodeCamp',
+    friends: ['Sam', 'Kira', 'Tomo'],
+    location: {
+      city: 'San Francisco',
+      sate: 'CA',
+      country: 'USA',
+    },
+  },
+};
+
+// Function
+function addFriend(userObject, friend) {
+  userObject['data']['friends'].push(friend);
+}
+
+// Testing
+console.log(user['data']['friends']);
+// ["Sam", "Kira", "Tomo"]
+
+addFriend(user, 'Tommy Hillary');
+
+console.log(user['data']['friends']);
+// ["Sam", "Kira", "Tomo", "Tommy Hillary"]
+
+console.log(user);
