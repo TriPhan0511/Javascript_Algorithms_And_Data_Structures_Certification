@@ -468,24 +468,121 @@
  * it will look like [3, 5, 20] and 19 is less than 20 (index 2) and greater than 5 (index 1).
  */
 
-function getIndexToIns(arr, num) {
-  arr.sort((a, b) => a - b);
-  console.log(arr);
-  for (let i = 0; i < arr.length; i++) {
-    if (num <= arr[i]) {
-      return i;
-    }
+// Solution 1
+// function getIndexToIns(arr, num) {
+//   arr.sort((a, b) => a - b);
+//   for (let i = 0; i < arr.length; i++) {
+//     if (num <= arr[i]) {
+//       return i;
+//     }
+//   }
+//   return arr.length;
+// }
+
+// // Solution 2
+// function getIndexToIns(arr, num) {
+//   return arr.filter((e) => e < num).length;
+// }
+
+// // Testing
+// console.log(getIndexToIns([10, 20, 30, 40, 50], 35));
+// // 3
+// console.log(getIndexToIns([10, 20, 30, 40, 50], 30));
+// // 2
+// console.log(getIndexToIns([3, 5, 4], 3));
+// // 0
+// console.log(getIndexToIns([1, 2, 5, 4], 6));
+// // 4
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * 15 - MUTATIONS
+ */
+
+/**
+ * Return true if the string in the first element of the array contains all of the letters
+ * of the string in the second element of the array.
+ *
+ * For example, ["hello", "Hello"], should return true because all of the letters in the
+ * second string are present in the first, ignoring case.
+ *
+ * The arguments ["hello", "hey"] should return false because the string "hello" does not
+ * contain a "y".
+ *
+ * Lastly, ["Alien", "line"], should return true because all of the letters in "line"
+ * are present in "Alien".
+ */
+
+// function mutation(arr) {
+//   let s1 = arr[0].toLowerCase();
+//   let s2 = arr[1].toLowerCase(0);
+//   for (let ch of s2) {
+//     if (!s1.includes(ch)) {
+//       return false;
+//     }
+//   }
+//   return true;
+// }
+
+// // Testing
+// console.log(mutation(['hello', 'Hello']));
+// // true
+// console.log(mutation(['hello', 'hey']));
+// // false
+// console.log(mutation(['Alien', 'line']));
+// // true
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * 16 - CHUNKY MONKEY
+ */
+
+/**
+ * Write a function that splits an array (first argument) into groups the length of
+ * size (second argument) and returns them as a two-dimesional array.
+ */
+
+// Solution 1
+// function chunkArrayInGroups(arr, size) {
+//   let output = [];
+//   let len = arr.length;
+//   while (len > 0) {
+//     output.push(arr.slice(0, size));
+//     arr = arr.slice(size);
+//     len = len - size;
+//   }
+//   return output;
+// }
+
+// Solution 2
+// function chunkArrayInGroups(arr, size) {
+//   let output = [];
+//   for (let i = 0; i < arr.length; i += size) {
+//     output.push(arr.slice(i, i + size));
+//   }
+//   return output;
+// }
+
+// Solution3
+function chunkArrayInGroups(arr, size) {
+  let output = [];
+  while (arr.length > 0) {
+    output.push(arr.splice(0, size));
   }
-  return arr.length - 1;
+  return output;
 }
 
-// console.log(getIndexToIns([40, 60], 50));
-// console.log(getIndexToIns([10, 20, 30, 40, 50], 35));
-console.log(getIndexToIns([5, 3, 20, 3], 5));
+// Testing
+console.log(chunkArrayInGroups(['a', 'b', 'c', 'd'], 2));
+// [['a', 'b'], ['c', 'd']]
 
-let a = [2, 1];
-// a.sort();
-// console.log(a);
+console.log(chunkArrayInGroups([0, 1, 2, 3, 4, 5], 4));
+// [[0, 1, 2, 3], [4, 5]]
 
-a.sort((a, b) => a - b);
-console.log(a);
+console.log(chunkArrayInGroups([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 3));
+// [
+//   [0, 1, 2],
+//   [3, 4, 5],
+//   [6, 7, 8],
+//   [9]
+// ]
