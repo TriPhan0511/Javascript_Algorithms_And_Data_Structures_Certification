@@ -217,17 +217,83 @@
     swan.name = 'Carlos';
     swan.color = 'white';
  * 
- * Suppose 
+ * Suppose you were writing a program to keep track of hundreds or even thousands of
+ * different birds in an aviary. It would take a lot of time to create all the birds,
+ * the change the properties to different values for every one. 
  * 
+ * To more easily create different Bird objects, you can design your Bird constructor
+ * accept parameters:
  */
 
-function Bird() {
-  (this.name = 'Albert'), (this.color = 'blue'), (this.numLegs = 2);
-}
+// // Constructor
+// function Bird(name, color) {
+//     (this.name = name), (this.color = color), (this.numLegs = 2);
+// }
 
-let swan = new Bird();
-swan.name = 'Carlos';
-swan.color = 'white';
+// // Create a new object
+// let cardinal = new Bird('Bruce', 'red');
+// console.log(cardinal.name);
+// // Bruce
+// console.log(cardinal.color);
+// // red
+// console.log(cardinal.numLegs);
+// // 2
 
-console.log(swan.name);
-// Carlos
+/**
+ * The constructor is more flexible. It's now possible to define properties for each
+ * Bird at the time it is created, which is one way that Javascript constructor are so
+ * useful. They group objects together based on shared characteristics and behavior and
+ * define a blueprint that automates their creation.
+ */
+// ------------------------------------------------------------------------------------
+
+/**
+ * 08 - VERIFY AN OBJECT'S CONSTRUCTOR WITH instanceof
+ */
+
+/**
+ * Anytime a constructor function creates a new object, that object is said to be an
+ * instance of its constructor.
+ *
+ * Javascript gives a covenient way to verify this with the instanceof operator.
+ * instanceof allows you to compare an object to a constructor, returning true or
+ * false based on wether or not that object was created with the constructor.
+ *
+ * Here's an example:
+ */
+
+// function Bird(name, color) {
+//     this.name = name;
+//     this.color = color;
+//     this.numLegs = 2;
+// }
+
+// function Dog(name) {
+//     this.name = name;
+// }
+
+// let canary = {
+//     name: 'Mildred',
+//     color: 'Yellow',
+//     numLegs: 2,
+// };
+
+// let crow = new Bird('Alexis', 'black');
+// console.log(crow instanceof Bird);
+// // true
+// console.log(crow instanceof Dog);
+// // false
+// console.log(canary instanceof Bird);
+// // false
+// ------------------------------------------------------------------------------------
+
+/**
+ * 09 - UNDERSTAND OWN PROPERTIES
+ */
+
+/**
+ * In the following example, the Bird constructor defines two properties:
+ * name and numLegs
+ */
+
+function Bird()
