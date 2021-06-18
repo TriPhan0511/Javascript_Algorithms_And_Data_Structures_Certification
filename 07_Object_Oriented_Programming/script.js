@@ -296,4 +296,358 @@
  * name and numLegs
  */
 
-function Bird()
+// function Bird(name) {
+//   this.name = name;
+//   this.numLegs = 2;
+// }
+
+// let duck = new Bird('Donald');
+// let canary = new Bird('Tweety');
+
+/**
+ * name and numLegs are called own properties, because they are defined directly on the
+ * instance object. That means that duck and canary each has its own seperate copy of
+ * these properties. In fact every instance of Bird will have its own copy of these
+ * properties.
+ *
+ * The following code adds all the own properties of duck to the array ownProps:
+ */
+
+// let ownProps = [];
+// for (let property in duck) {
+//   ownProps.push(property);
+// }
+
+// console.log(ownProps);
+// // ["name", "numLegs"]
+
+// Another solution
+// let ownProps = Object.getOwnPropertyNames(duck);
+// console.log(ownProps);
+// // ["name", numLegs]
+// ------------------------------------------------------------------------------------
+
+/**
+ * 10 - USE prototype PROPERTIES TO REDUCE DUPLICATE CODE
+ */
+
+/**
+ * Since numLegs will probably have the same value for all instances of Bird,
+ * you essentially have a duplicated variable numLegs inside each Bird instance.
+ *
+ * This may not be an issue when there are only two instances, but imagine if there are
+ * millions of instances. That would be a lot of duplicated variables.
+ *
+ * A better way is to use the prototype of Bird. Properties in the protoype are shared
+ * among LL instances of Bird.
+ *
+ * Here's how to add numLegs to the Bird prototype:
+ */
+
+// // Constructor function
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// // Create two instances of Bird
+// let duck = new Bird('Donald');
+// let canary = new Bird('Tweety');
+
+// console.log(duck.name);
+// // Donald
+// console.log(duck.numLegs);
+// // undefined
+
+// // Add numLegs to the Bird prototype
+// Bird.prototype.numLegs = 2;
+
+/**
+ * Now all instances of Bird have the numLegs property
+ */
+
+// console.log(duck.numLegs);
+// // 2
+// console.log(canary.numLegs);
+// // 2
+
+/**
+ * Since all instances automatically have the properties on the prototype, think of a prototype
+ * as a "recipe" for creating objects.
+ *
+ * Note that the prototype for duck and canary is a part of the Bird constructor as Bird.prototype.
+ * Nearly every object in Javascript has a prototype property which is part of constructor function
+ * that created it.
+ */
+// ------------------------------------------------------------------------------------
+
+/**
+ * 11 - ITERATE OVER ALL PROPERTIES
+ */
+
+/**
+ * You have now seen two kinds of properties: own properties and prototype properties.
+ * Own properties are defined directly on the object instance itself.
+ * And prototype properties are defined on the prototype.
+ */
+
+// // Constuctor
+// function Bird(name) {
+//   this.name = name; // own property
+// }
+
+// // Add "numLegs" prototype to Bird's prototype
+// Bird.prototype.numLegs = 2; // prototype property
+
+// // Create a instance of Bird
+// let duck = new Bird('Donald');
+
+/**
+ * Here is how you add duck's own properties to the array ownProps and prototype properties
+ * to the array prototypeProps
+ */
+
+// let ownProps = [];
+// let prototypeProps = [];
+
+// for (let prop in duck) {
+//   if (duck.hasOwnProperty(prop)) {
+//     ownProps.push(prop);
+//   } else {
+//     prototypeProps.push(prop);
+//   }
+// }
+
+// console.log(ownProps);
+// // ["name"]
+// console.log(prototypeProps);
+// // ["numLegs"]
+// ------------------------------------------------------------------------------------
+
+/**
+ * 12 - UNDERSTAND THE CONSTRUCTOR PROPERTY
+ */
+
+/**
+ * There is a special constructor property located on the object instance duck that were
+ * created in the previous challenge
+ */
+
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// let duck = new Bird('Donald');
+
+// console.log('constructor' in duck);
+// // true
+
+// console.log(duck.constructor === Bird);
+// // true
+
+/**
+ * Note that the constructor property is a reference to the constructor function that
+ * created the instance.
+ *
+ * The advantage of the constructor property is that it's possible to check for this
+ * property to find out what kind of object it is.
+ *
+ * Here's an example of how this could be used:
+ */
+
+// function joinBirdFraternity(candidate) {
+//   return candidate.constructor === Bird;
+// }
+
+// console.log(joinBirdFraternity(duck));
+// // true
+
+/**
+ * Note: Since the constructor property can be overwritten, it's generally better to use
+ * the instanceof operator to check the type of an object.
+ */
+
+// console.log(duck instanceof Bird);
+// // true
+// ------------------------------------------------------------------------------------
+
+/**
+ * 13 - CHANGE THE prototype TO THE NEW OBJECT
+ */
+
+/**
+ * Up until now you have adding properties to the prototype individually:
+ *
+    Bird.prototype.numLegs = 2;
+ *
+ * This become tedious after more than a few properties:
+ * 
+    Bird.prototype.eat = function () {
+      console.log('nom nom nom');
+    };
+
+    Bird.prototype.describe = function () {
+      return `My name is ${this.name}, and I have ${this.numLegs} legs.`;
+    };
+ *
+ * A more efficient way is to set the prototype to a new object that already contains
+ * the properties. This way, the properties are added all at once:
+ */
+
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// Bird.prototype = {
+//   eat: function () {
+//     console.log('nom nom nom');
+//   },
+//   describe: function () {
+//     return `My name is ${this.name}.`;
+//   },
+// };
+
+// let duck = new Bird('Donald');
+// duck.eat();
+// // nom nom nom
+// console.log(duck.describe());
+// // My name is Donald.
+// ------------------------------------------------------------------------------------
+
+/**
+ * 14 - REMEMBER TO SET THE CONSTRUCTOR PROPERTY WHEN CHANGING THE prototype
+ */
+
+/**
+ * There is one crucial side effect of manually setting the prototype to a new object.
+ * It erases the constructor property! This property can be used to check which constructor
+ * function created the instance, but since the property has been overwritten, it now gives
+ * false results.
+ */
+
+// // Constructor function
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// // Overwrite the prototype of Bird
+// Bird.prototype = {
+//   describe: function () {
+//     console.log(`My name is ${this.name}.`);
+//   },
+// };
+
+// // Create a new instance of Bird
+// let duck = new Bird('Donald');
+
+// // Check
+// console.log(duck.constructor === Bird);
+// // false
+// console.log(duck.constructor === Object);
+// // true
+// console.log(duck instanceof Bird);
+// // true
+
+/**
+ * To fix this, whenever a prototype is manually set to a new object, remember to define
+ * the constructor property:
+ */
+
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// Bird.prototype = {
+//   constructor: Bird,
+//   describe: function () {
+//     console.log(`My name is ${this.name}.`);
+//   },
+// };
+
+// let duck = new Bird('Donald');
+
+// // Testing
+// console.log(duck.constructor === Bird);
+// // true
+// ------------------------------------------------------------------------------------
+
+/**
+ * 15 - UNDERSTAND WHERE AN OBJECT'S prototype COMES FROM
+ */
+
+/**
+ * Just like people inherit genes from their parents, an object inherits its prototype
+ * directly from the constructor function that created it.
+ */
+
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// let duck = new Bird('Donald');
+
+// // There are two ways to check
+// console.log(Bird.prototype.isPrototypeOf(duck));
+// // true
+// console.log(Object.getPrototypeOf(duck) === Bird.prototype);
+// // true
+// ------------------------------------------------------------------------------------
+
+/**
+ * 16 - UNDERSTAND THE PROTOTYPE CHAIN
+ */
+
+/**
+ * All objects in Javascript (with a few exception) have a prototype. Also, an object's
+ * prototype itself is an object.
+ */
+
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// console.log(typeof Bird.prototype);
+// // object
+
+/**
+ * Because a prototype is an object, a prototype can have its own prototype!
+ * In this case, the prototype of Bird.prototype is Object.prototype
+ */
+
+// console.log(Object.prototype.isPrototypeOf(Bird.prototype));
+// // true
+
+/**
+ * How is this useful? You may recall the hasOwnProperty method from previous challenge:
+ */
+
+// let duck = new Bird('Donald');
+// console.log(duck.hasOwnProperty('name'));
+// // true
+
+/**
+ * The hasOwnProperty method is defined in Object.prototype, which can be accessed by
+ * Bird.prototype, which can then be accessed by duck.
+ *
+ * This is an example of the prototype chain.
+ *
+ * In this prototype chain, Bird is the supertype for duck, while duck is the subtype.
+ * Object is the supertype for both Bird and duck. Object is a supertype for all objects
+ * in Javascript. Therefore, any object can use the hasOwnProperty method.
+ */
+
+function Bird(name) {
+  this.name = name;
+}
+
+let duck = new Bird('Donald');
+
+// console.log(typeof Bird);
+// // function
+// console.log(typeof duck);
+// // object
+
+// console.log(Object.getPrototypeOf(Object));
+
+console.log(Object.getPrototypeOf(Bird) === Function.prototype);
+// true
+
