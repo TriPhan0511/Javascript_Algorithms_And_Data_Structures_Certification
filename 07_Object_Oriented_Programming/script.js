@@ -634,20 +634,506 @@
  * Object is the supertype for both Bird and duck. Object is a supertype for all objects
  * in Javascript. Therefore, any object can use the hasOwnProperty method.
  */
+// ------------------------------------------------------------------------------------
 
-function Bird(name) {
-  this.name = name;
+/**
+ * 17 - USE INHERITANCE SO YOU DON'T REPEAT YOURSELF
+ */
+
+/**
+ * There's a principle in programming called Don't Repeat Yourself (DRY). The reason
+ * repeated code is a problem is because any change requires fixing code in multiple
+ * places. Thus usually more work for programmers and more room for errors.
+ *
+ * Notice in the exmaple below that the describe method is shared by Bird and Dog:
+ */
+
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// function Dog(name) {
+//   this.name = name;
+// }
+
+// Bird.prototype = {
+//   constructor: Bird,
+//   describe: function () {
+//     console.log(`My name is ${this.name}`);
+//   },
+// };
+
+// Dog.prototype = {
+//   constructor: Dog,
+//   describe: function () {
+//     console.log(`My name is ${this.name}`);
+//   },
+// };
+
+/**
+ * The describe method is repeated in two places. The code can be edited to follow
+ * the DRY principle by creating a supertype (or parent) called Animal:
+ */
+
+// function Animal() {}
+
+// Animal.prototype = {
+//   constructor: Animal,
+//   describe: function () {
+//     console.log(`My name is ${this.name}.`);
+//   },
+// };
+
+/**
+ * Since Animal includes the describe method, you can remove it from Bird and Dog:
+ */
+
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// function Dog(name) {
+//   this.name = name;
+// }
+
+// Bird.prototype = {
+//   constructor: Bird,
+// };
+
+// Dog.prototype = {
+//   constructor: Dog,
+// };
+
+// // Testing
+// let anAnimal = new Animal();
+// anAnimal.describe();
+// // My name is undefined.
+
+// let duck = new Bird('Donald');
+// duck.describe(); // Uncaught TypeError: duck.describe is not a function
+// ------------------------------------------------------------------------------------
+
+/**
+ * 18 - INHERIT BEHAVIORS FROM A SUPERTYPE
+ */
+
+/**
+ * In the previous challenge, you created a supertype called Animal that defined behaviors
+ * shared by all animals:
+ */
+
+// function Animal() {}
+// Animal.prototype = {
+//   constructor: Animal,
+//   eat: function () {
+//     console.log('nom nom nom');
+//   },
+// };
+
+/**
+ * This and next challenge will cover how to reuse the methods of Animal inside Bird and
+ * Dog without defining them again.
+ *
+ * It uses a technique called inheritance.
+ *
+ * This challenge covers the first step: make an instance of the supertype (or parent).
+ * You already know one way to create an instance of Animal using new operator:
+ */
+
+// let animal = new Animal();
+
+/**
+ * There are some disadvantages when using this syntax for inheritance, which are too
+ * complex for the scope of this challenge. Instead, here's an alternative approach
+ * without those disadvantages:
+ */
+
+// let animal = Object.create(Animal.prototype);
+
+/**
+ * Object.create(obj) creates a new object, and sets as the new object's prototype.
+ * Recall that the prototype is like the "recipe" for creating an object.
+ * By setting the prototype of animal to be the prototype of Animal, you are
+ * effectively giving the animal instance the same "recipe" as any other instance
+ * of Animal.
+ */
+
+// animal.eat();
+// // nom nom nom
+// console.log(animal instanceof Animal);
+// // true
+// ------------------------------------------------------------------------------------
+
+/**
+ * 19 - SET THE CHILD'S prototype TO AN INSTANCE OF THE PARENT
+ */
+
+/**
+ * In the previous challenge you saw the furst step for inheriting behavior from the
+ * supertype (or parent) Animal: making an instance of Animal.
+ * (let animal = Object.create(Animal.prototype);)
+ *
+ * This challenge covers the next step: set the prototype of the subtype (or child) - in
+ * this case , Bird - to be an instance of Animal:
+ */
+
+// // Animal constructor function
+// function Animal() {}
+
+// // Set Animal's prototype
+// Animal.prototype = {
+//   constructor: Animal,
+//   eat: function () {
+//     console.log('nom nom nom');
+//   },
+// };
+
+// // Bird constructor function
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// // Set Bird's prototype
+// Bird.prototype = Object.create(Animal.prototype);
+
+/**
+ * Remember that the prototype is like the "recipe" for creating an object.
+ * In a way, the recipe for Bird now includes all the key "ingredients" from Animal.
+ */
+
+// let duck = new Bird('Donal');
+// duck.eat();
+// // nom nom nom
+
+/**
+ * duck inherits all of Animal's properties, including the eat method.
+ */
+// ------------------------------------------------------------------------------------
+
+/**
+ * 20 - RESET AN INHERITED CONSTRUCTOR PROPERTY
+ */
+
+/**
+ * When an object inherits its prototype from another object, it also inherits the
+ * supertype's constructor property.
+ *
+ * Here's an example:
+ */
+
+// // Animal constructor function
+// function Animal() {}
+
+// // Bird constructor function
+// function Bird() {}
+
+// // Bird inherit prototype from Animal's prototype
+// Bird.prototype = Object.create(Animal.prototype);
+
+// // Create an instance of Bird
+// let duck = new Bird();
+
+// console.log(duck.constructor === Animal);
+// // true
+
+/**
+ * But duck and all instances of Bird should show that they were constructed by Bird and
+ * not Animal. To do so, you ca manually set the constructor property of Bird
+ * to the Bird object:
+ */
+
+// Bird.prototype.constructor = Bird;
+
+// console.log(duck.constructor === Animal);
+// // false
+// console.log(duck.constructor === Bird);
+// // True
+// ------------------------------------------------------------------------------------
+
+/**
+ * 21 - ADD METHODS AFTER INHERITANCE
+ */
+
+/**
+ * A constructor function that inherits its prototype object from a supertype constructor
+ * function can still have its own methods in addition to inherited methods.
+ *
+ * For example, Bird is a constructor function that inherits its prototype from Animal:
+ */
+
+// // Animal constructor function
+// function Animal() {}
+
+// // Add eat method to Animal's prototype
+// Animal.prototype.eat = function () {
+//   console.log('nom nom nom');
+// };
+
+// // Bird constructor function
+// function Bird() {}
+
+// // Bird constructor function inherit its prototype from Animal constructor function
+// Bird.prototype = Object.create(Animal.prototype);
+
+// // Reset Bird prototype's constructor property
+// Bird.prototype.constructor = Bird;
+
+/**
+ * In addition to what is inherited from Animal, you wan to add behavior that is
+ * unique to Bird objects.
+ *
+ * Here's Bird will get a fly() function. Functions are added to Bird's prototype
+ * the same way as any constructor function:
+ */
+
+// Bird.prototype.fly = function () {
+//   console.log("I'm flying!");
+// };
+
+/**
+ * Now instances of Bird will have both eat() and fly() methods:
+ */
+
+// let duck = new Bird();
+// duck.eat();
+// // nom nom nom
+// duck.fly();
+// // I'm flying!
+// ------------------------------------------------------------------------------------
+
+/**
+ * 22 - OVERRIDE INHERITED METHODS
+ */
+
+/**
+ * In the previous lessons, you learned that an object can inherit its behavior (methods)
+ * from another object by referencing its prototype object:
+ *
+ *    ChildObject.prototype = Object.create(ParentObject.prototype);
+ *
+ * Then the ChildObject received its own methods by chaining them onto its prototype:
+ *
+ *    ChildObject.prototype.methodName = function() {...};
+ *
+ * It's possible to override an inherited method. It's done the same way - by adding
+ * a method to ChildObject.prototype using the same method name as the one to override.
+ *
+ * Here's an example of Bird overriding the eat() method inherited from Animal:
+ */
+
+// // Animal constructor function
+// function Animal() {}
+
+// // Add eat() method to Animal's prototype
+// Animal.prototype.eat = function () {
+//   return 'nom nom nom';
+// };
+
+// // Bird constructor function
+// function Bird(name) {
+//   this.name = name;
+// }
+
+// // Bird inherit prototype from Animal's prototype
+// Bird.prototype = Object.create(Animal.prototype);
+
+// // Reset Bird's prototype constructor property
+// Bird.prototype.constructor = Bird;
+
+// // Override the eat() method
+// Bird.prototype.eat = function () {
+//   // console.log('peck peck peck');
+//   return 'peck peck peck';
+// };
+
+/**
+ * If you have an instance let duck = new Bird('Donald'); and you call duck.eat(),
+ * this is how Javascript looks for the method on the prototype chain of duck:
+ *
+ *    1. duck => Is eat() defined here? No.
+ *    2. Bird => Is eat() defined here? Yes. Execute it and stop searching.
+ *    3. Animal => eat() is also defined, but Javascript stopped searching before
+ *        reaching this level.
+ *    4. Object => Javascript stopped searching before reaching this level.
+ */
+
+// // Testing
+// let duck = new Bird('Donald');
+// console.log(duck.eat());
+// // peck peck peck
+// ------------------------------------------------------------------------------------
+
+/**
+ * 23 - USE A MIXIN TO ADD COMMON BEHAVIOR BETWEEN UNRELATED OBJECTS
+ */
+
+/**
+ * As you have seen, behavior is shared through inheritance. However, there are cases
+ * when inheritance is not the best solution.
+ *
+ * Inheritance does not work well for unrelated objects like Bird and Airplane. They
+ * can both fly, but a Bird is not a type of a Airplane and vice versa.
+ *
+ * For unrelated objects, it's better to use mixins. A mixin allows other objects to
+ * use a collection of functions.
+ */
+
+// let flyMixin = function (obj) {
+//   obj.fly = function () {
+//     console.log('Flying, wooosh!');
+//   };
+// };
+
+/**
+ * The flyMixin takes any object and gives it the fly method.
+ */
+
+// let bird = {
+//   name: 'Donald',
+//   numLegs: 2,
+// };
+
+// let plane = {
+//   model: '777',
+//   numPassenger: 524,
+// };
+
+// flyMixin(bird);
+// flyMixin(plane);
+
+// // Testing
+// bird.fly();
+// // Flying! wooosh!
+// plane.fly();
+// // Flying! wooosh!
+
+/**
+ * Note how the mixin allows for the same fly method to be reused by unrelated objects
+ * bird and plane.
+ */
+// ------------------------------------------------------------------------------------
+
+/**
+ * 24 - USE CLOSURE TO PROTECT PROPERTIES WITHIN AN OBJECT FROM BEING MODIFIED EXTERNALLY
+ */
+
+/**
+ * In the previous challenge, bird had a public property name. It is considered public
+ * because it can be accessed and change outside of bird's definition.
+ *
+ *    duck.name = 'Duffy'
+ *
+ * Therefore, any part of your code can easily change the name of bird to any value.
+ * Think about things like passwords and bank accounts being easili changeable by
+ * any part of your codebase. That could cause a lot of issues.
+ *
+ * The simplest way to make this public property private is by creating a variable within
+ * the constructor function. This changes the scope of that variable to be within
+ * the constructor function versus available globally. This way, the variable can only be
+ * accessed and changed by methods also within the constructor function.
+ */
+
+// function Bird() {
+//   let hatchedEgg = 10;
+
+//   this.getHatchedEggCount = function () {
+//     return hatchedEgg;
+//   };
+// }
+
+// let ducky = new Bird();
+// console.log(ducky.getHatchedEggCount());
+// // 10
+
+// console.log(ducky.hatchedEgg);
+// // undefined
+
+/**
+ * Here getHatchedEggCount is a privileged method, because it has access to the
+ * private variable hatchedEgg. This is possible because hatchedEgg is delcared in
+ * the same context as getHatchedEggCount. In Javascript, a function always
+ * has acceess to the context in which it was created. This is called closure.
+ */
+// ------------------------------------------------------------------------------------
+
+/**
+ * 25 - UNDERSTAND THE IMMEDIATELY INVOKED FUNCTION EXPRESSION (IIFE)
+ */
+
+/**
+ * A common pattern in Javascript is to execute a function as soon as it is declared:
+ */
+
+// (function () {
+//   console.log('Chirp, chirp!');
+// })();
+
+/**
+ * This is an anonymous function expression that executes right away, and ouputs
+ * "Chirp, chirp!" immediately.
+ *
+ * Note that the function has no name and is not stored in a variable.
+ * The two parenheses () at the end of the function expression cause it immediately
+ * executed or invoked.
+ * This pattern is known as an immediately invoked function expression or IIFE.
+ */
+// ------------------------------------------------------------------------------------
+
+/**
+ * 26 - USE AN IIFE TO CREATE A MODULE
+ */
+
+/**
+ * An immediately invoke function expression (IIFE) is often used to group related
+ * functionality into a single object or module.
+ *
+ * For example, an earlier challenge defined two mixins:
+ */
+
+function glideMixin(obj) {
+  obj.glide = function () {
+    console.log('Gliding on the water');
+  };
 }
 
-let duck = new Bird('Donald');
+function flyMixin(obj) {
+  obj.fly = function () {
+    console.log('Flying, wooosh!');
+  };
+}
 
-// console.log(typeof Bird);
-// // function
-// console.log(typeof duck);
-// // object
+/**
+ * We can group these mixins into a module as follows:
+ */
 
-// console.log(Object.getPrototypeOf(Object));
+let motionModule = (function () {
+  return {
+    glideMixin: function (obj) {
+      obj.glide = function () {
+        console.log('Gliding on the water');
+      };
+    },
+    flyMixin: function () {
+      console.log('Flying, wooosh!');
+    },
+  };
+})();
 
-console.log(Object.getPrototypeOf(Bird) === Function.prototype);
-// true
+/**
+ * Note that you have a immediateky invoked function expression (IIFE) that returns
+ * an object motionModule. This returned object contains all of the mixin behaviors
+ * as properties of the object.
+ *
+ * The advantage of the module pattern is that all of the motion behaviors can be packed
+ * into a single object that can be used by other parts of your code.
+ *
+ * Here is an example using it:
+ */
 
+function Bird() {}
+let duck = new Bird();
+
+motionModule.glideMixin(duck);
+// Testing
+duck.glide();
+// Gliding on the water
