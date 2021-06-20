@@ -1073,7 +1073,7 @@
  * "Chirp, chirp!" immediately.
  *
  * Note that the function has no name and is not stored in a variable.
- * The two parenheses () at the end of the function expression cause it immediately
+ * The two parentheses () at the end of the function expression cause it immediately
  * executed or invoked.
  * This pattern is known as an immediately invoked function expression or IIFE.
  */
@@ -1090,34 +1090,34 @@
  * For example, an earlier challenge defined two mixins:
  */
 
-function glideMixin(obj) {
-  obj.glide = function () {
-    console.log('Gliding on the water');
-  };
-}
+// function glideMixin(obj) {
+//   obj.glide = function () {
+//     console.log('Gliding on the water');
+//   };
+// }
 
-function flyMixin(obj) {
-  obj.fly = function () {
-    console.log('Flying, wooosh!');
-  };
-}
+// function flyMixin(obj) {
+//   obj.fly = function () {
+//     console.log('Flying, wooosh!');
+//   };
+// }
 
-/**
- * We can group these mixins into a module as follows:
- */
+// /**
+//  * We can group these mixins into a module as follows:
+//  */
 
-let motionModule = (function () {
-  return {
-    glideMixin: function (obj) {
-      obj.glide = function () {
-        console.log('Gliding on the water');
-      };
-    },
-    flyMixin: function () {
-      console.log('Flying, wooosh!');
-    },
-  };
-})();
+// let motionModule = (function () {
+//   return {
+//     glideMixin: function (obj) {
+//       obj.glide = function () {
+//         console.log('Gliding on the water');
+//       };
+//     },
+//     flyMixin: function () {
+//       console.log('Flying, wooosh!');
+//     },
+//   };
+// })();
 
 /**
  * Note that you have a immediateky invoked function expression (IIFE) that returns
@@ -1130,10 +1130,101 @@ let motionModule = (function () {
  * Here is an example using it:
  */
 
-function Bird() {}
-let duck = new Bird();
+// function Bird() {}
+// let duck = new Bird();
 
-motionModule.glideMixin(duck);
-// Testing
-duck.glide();
-// Gliding on the water
+// motionModule.glideMixin(duck);
+// // Testing
+// duck.glide();
+// // Gliding on the water
+// ------------------------------------------------------------------------------------
+
+// // Protect private property
+// function Fish(name) {
+//   let _name = name;
+//   this.getName = function () {
+//     return _name;
+//   };
+// }
+
+// let shark = new Fish('James');
+
+// console.log(shark.getName());
+// // James
+
+// ------------------------------------------------------------------------------------
+
+// // Mixin: Add common behavior to unrelated objects
+// function motionMixin(obj) {
+//   obj.fly = function () {
+//     return "I'm flying";
+//   };
+// }
+
+// let eagle = {
+//   name: 'John',
+// };
+
+// let boeing = {
+//   id: 'abcd123',
+// };
+
+// motionMixin(eagle);
+// motionMixin(boeing);
+
+// console.log(eagle.fly());
+// // I'm flying
+// console.log(boeing.fly());
+// // I'm flying
+// ------------------------------------------------------------------------------------
+
+// Immediately Invoked Function Expression (IIFE)
+// Invoke a function as soon as it is declared
+
+// (function () {
+//   console.log('hello');
+// })();
+
+// let motionModule = (function () {
+//   return {
+//     flyMixin: function (obj) {
+//       obj.fly = function () {
+//         return "I'm flying";
+//       };
+//     },
+//     glideMixin: function (obj) {
+//       obj.glide = function () {
+//         return 'Gliding on the water';
+//       };
+//     },
+//   };
+// })();
+
+// let motionModule = {
+//   flyMixin: function (obj) {
+//     obj.fly = function () {
+//       return "I'm flying";
+//     };
+//   },
+//   glideMixin: function (obj) {
+//     obj.glide = function () {
+//       return 'Gliding on the water';
+//     };
+//   },
+// };
+
+// let animal_1 = {
+//   name: 'Jack',
+// };
+
+// let animal_2 = {
+//   name: 'Peter',
+// };
+
+// motionModule.flyMixin(animal_1);
+// console.log(animal_1.fly());
+// // I'm flying
+
+// motionModule.glideMixin(animal_2);
+// console.log(animal_2.glide());
+// // Gliding on the water
